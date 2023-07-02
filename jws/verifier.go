@@ -70,6 +70,14 @@ func init() {
 		}(alg))
 	}
 
+	for _, alg := range []jwa.SignatureAlgorithm{jwa.SS256K} {
+		RegisterVerifier(alg, func(alg jwa.SignatureAlgorithm) VerifierFactory {
+			return VerifierFactoryFn(func() (Verifier, error) {
+				return newSchnorrVerifier(alg), nil
+			})
+		}(alg))
+	}
+
 	for _, alg := range []jwa.SignatureAlgorithm{jwa.HS256, jwa.HS384, jwa.HS512} {
 		RegisterVerifier(alg, func(alg jwa.SignatureAlgorithm) VerifierFactory {
 			return VerifierFactoryFn(func() (Verifier, error) {

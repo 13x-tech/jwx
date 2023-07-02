@@ -33,7 +33,7 @@ Supported signature algorithms:
 | EdDSA (1)                               | YES        | jwa.EdDSA                |
 
 * Note 1: Experimental
-* Note 2: Experimental, and must be toggled using `-tags jwx_es256k` build tag
+* Note 2: Experimental, and must be toggled using `-tags jwx_secp256k1` build tag
 
 # SYNOPSIS
 

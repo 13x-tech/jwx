@@ -551,6 +551,42 @@ func TestSignatureAlgorithm(t *testing.T) {
 			return
 		}
 	})
+	t.Run(`accept jwa constant SS256K`, func(t *testing.T) {
+		t.Parallel()
+		var dst jwa.SignatureAlgorithm
+		if !assert.NoError(t, dst.Accept(jwa.SS256K), `accept is successful`) {
+			return
+		}
+		if !assert.Equal(t, jwa.SS256K, dst, `accepted value should be equal to constant`) {
+			return
+		}
+	})
+	t.Run(`accept the string SS256K`, func(t *testing.T) {
+		t.Parallel()
+		var dst jwa.SignatureAlgorithm
+		if !assert.NoError(t, dst.Accept("SS256K"), `accept is successful`) {
+			return
+		}
+		if !assert.Equal(t, jwa.SS256K, dst, `accepted value should be equal to constant`) {
+			return
+		}
+	})
+	t.Run(`accept fmt.Stringer for SS256K`, func(t *testing.T) {
+		t.Parallel()
+		var dst jwa.SignatureAlgorithm
+		if !assert.NoError(t, dst.Accept(stringer{src: "SS256K"}), `accept is successful`) {
+			return
+		}
+		if !assert.Equal(t, jwa.SS256K, dst, `accepted value should be equal to constant`) {
+			return
+		}
+	})
+	t.Run(`stringification for SS256K`, func(t *testing.T) {
+		t.Parallel()
+		if !assert.Equal(t, "SS256K", jwa.SS256K.String(), `stringified value matches`) {
+			return
+		}
+	})
 	t.Run(`bail out on random integer value`, func(t *testing.T) {
 		t.Parallel()
 		var dst jwa.SignatureAlgorithm
@@ -583,6 +619,7 @@ func TestSignatureAlgorithm(t *testing.T) {
 			jwa.RS256:       {},
 			jwa.RS384:       {},
 			jwa.RS512:       {},
+			jwa.SS256K:      {},
 		}
 		for _, v := range jwa.SignatureAlgorithms() {
 			if _, ok := expected[v]; !assert.True(t, ok, `%s should be in the expected list`, v) {

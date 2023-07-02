@@ -13,22 +13,22 @@ import (
 )
 
 func init() {
-	hasES256K = true
+	hasSS256K = true
 }
 
-func TestES256K(t *testing.T) {
+func TestSS256K(t *testing.T) {
 	payload := []byte("Hello, World!")
 
 	t.Parallel()
-	key, err := jwxtest.GenerateEcdsaKey(jwa.Secp256k1)
+	key, err := jwxtest.GenerateSchnorrKey()
 	if !assert.NoError(t, err, "ECDSA key generated") {
 		return
 	}
-	jwkKey, _ := jwk.FromRaw(key.PublicKey)
+	jwkKey, _ := jwk.FromRaw(key.PubKey())
 	keys := map[string]interface{}{
-		"Verify(ecdsa.PublicKey)":  key.PublicKey,
-		"Verify(*ecdsa.PublicKey)": &key.PublicKey,
-		"Verify(jwk.Key)":          jwkKey,
+		"Verify(secp256k1.PublicKey)":  *key.PubKey(),
+		"Verify(*secp256k1.PublicKey)": key.PubKey(),
+		"Verify(jwk.Key)":              jwkKey,
 	}
 	testRoundtrip(t, payload, jwa.ES256K, key, keys)
 }

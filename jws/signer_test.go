@@ -74,17 +74,26 @@ func TestSignMulti(t *testing.T) {
 		return
 	}
 
+	schnorrkey, err := jwxtest.GenerateSchnorrKey()
+	if !assert.NoError(t, err, "ECDSA key generated") {
+		return
+	}
+
 	s1hdr := jws.NewHeaders()
 	s1hdr.Set(jws.KeyIDKey, "2010-12-29")
 
 	s2hdr := jws.NewHeaders()
 	s2hdr.Set(jws.KeyIDKey, "e9bc097a-ce51-4036-9562-d2ade882db0d")
 
+	s3hdr := jws.NewHeaders()
+	s3hdr.Set(jws.KeyIDKey, "test-test-test")
+
 	v := strings.Join([]string{`{"iss":"joe",`, ` "exp":1300819380,`, ` "http://example.com/is_root":true}`}, "\r\n")
 	m, err := jws.Sign([]byte(v),
 		jws.WithJSON(),
 		jws.WithKey(jwa.RS256, rsakey, jws.WithPublicHeaders(s1hdr)),
 		jws.WithKey(jwa.ES256, dsakey, jws.WithPublicHeaders(s2hdr)),
+		jws.WithKey(jwa.SS256K, schnorrkey, jws.WithPublicHeaders(s3hdr)),
 	)
 	if !assert.NoError(t, err, "jws.SignMulti should succeed") {
 		return

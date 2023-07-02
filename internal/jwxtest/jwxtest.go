@@ -15,6 +15,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"github.com/lestrrat-go/jwx/v2/internal/ecutil"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jwe"
@@ -50,7 +51,15 @@ func GenerateRsaPublicJwk() (jwk.Key, error) {
 
 	return jwk.PublicKeyOf(key)
 }
+func GenerateSchnorrKey() (*secp256k1.PrivateKey, error) {
+	randomBytes := make([]byte, 32)
+	_, err := rand.Read(randomBytes)
+	if err != nil {
+		return nil, fmt.Errorf(`could not generate randomness: %w`, err)
+	}
 
+	return secp256k1.PrivKeyFromBytes(randomBytes), nil
+}
 func GenerateEcdsaKey(alg jwa.EllipticCurveAlgorithm) (*ecdsa.PrivateKey, error) {
 	var crv elliptic.Curve
 	if tmp, ok := ecutil.CurveForAlgorithm(alg); ok {

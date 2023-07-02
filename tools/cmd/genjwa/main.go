@@ -206,8 +206,11 @@ func _main() error {
 					name:    `ES256K`,
 					value:   "ES256K",
 					comment: `ECDSA using secp256k1 and SHA-256`,
-				},
-				{
+				}, {
+					name:    "SS256K",
+					value:   "SS256K",
+					comment: "Schnorr using secp256k1 and SHA-256",
+				}, {
 					name:    `EdDSA`,
 					value:   `EdDSA`,
 					comment: `EdDSA signature algorithms`,

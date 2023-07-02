@@ -41,6 +41,7 @@ const exampleCompactSerialization = `eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.ey
 const badValue = "%badvalue%"
 
 var hasES256K bool
+var hasSS256K bool
 
 func TestSanity(t *testing.T) {
 	t.Run("sanity: Verify with single key", func(t *testing.T) {
@@ -1882,6 +1883,12 @@ func TestAlgorithmsForKey(t *testing.T) {
 		if hasES256K {
 			if strings.Contains(strings.ToLower(tc.Name), `ecdsa`) {
 				tc.Expected = append(tc.Expected, jwa.ES256K)
+			}
+		}
+
+		if hasSS256K {
+			if strings.Contains(strings.ToLower(tc.Name), `schnorr`) {
+				tc.Expected = append(tc.Expected, jwa.SS256K)
 			}
 		}
 

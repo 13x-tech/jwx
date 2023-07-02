@@ -22,12 +22,13 @@ const (
 	HS384       SignatureAlgorithm = "HS384"  // HMAC using SHA-384
 	HS512       SignatureAlgorithm = "HS512"  // HMAC using SHA-512
 	NoSignature SignatureAlgorithm = "none"
-	PS256       SignatureAlgorithm = "PS256" // RSASSA-PSS using SHA256 and MGF1-SHA256
-	PS384       SignatureAlgorithm = "PS384" // RSASSA-PSS using SHA384 and MGF1-SHA384
-	PS512       SignatureAlgorithm = "PS512" // RSASSA-PSS using SHA512 and MGF1-SHA512
-	RS256       SignatureAlgorithm = "RS256" // RSASSA-PKCS-v1.5 using SHA-256
-	RS384       SignatureAlgorithm = "RS384" // RSASSA-PKCS-v1.5 using SHA-384
-	RS512       SignatureAlgorithm = "RS512" // RSASSA-PKCS-v1.5 using SHA-512
+	PS256       SignatureAlgorithm = "PS256"  // RSASSA-PSS using SHA256 and MGF1-SHA256
+	PS384       SignatureAlgorithm = "PS384"  // RSASSA-PSS using SHA384 and MGF1-SHA384
+	PS512       SignatureAlgorithm = "PS512"  // RSASSA-PSS using SHA512 and MGF1-SHA512
+	RS256       SignatureAlgorithm = "RS256"  // RSASSA-PKCS-v1.5 using SHA-256
+	RS384       SignatureAlgorithm = "RS384"  // RSASSA-PKCS-v1.5 using SHA-384
+	RS512       SignatureAlgorithm = "RS512"  // RSASSA-PKCS-v1.5 using SHA-512
+	SS256K      SignatureAlgorithm = "SS256K" // Schnorr using secp256k1 and SHA-256
 )
 
 var muSignatureAlgorithms sync.RWMutex
@@ -53,6 +54,7 @@ func init() {
 	allSignatureAlgorithms[RS256] = struct{}{}
 	allSignatureAlgorithms[RS384] = struct{}{}
 	allSignatureAlgorithms[RS512] = struct{}{}
+	allSignatureAlgorithms[SS256K] = struct{}{}
 	rebuildSignatureAlgorithm()
 }
 

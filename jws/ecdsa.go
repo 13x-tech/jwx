@@ -15,6 +15,8 @@ import (
 
 var ecdsaSigners map[jwa.SignatureAlgorithm]*ecdsaSigner
 var ecdsaVerifiers map[jwa.SignatureAlgorithm]*ecdsaVerifier
+var schnorrSigners map[jwa.SignatureAlgorithm]*schnorrSigner
+var schnorrVerifiers map[jwa.SignatureAlgorithm]*schnorrVerifier
 
 func init() {
 	algs := map[jwa.SignatureAlgorithm]crypto.Hash{
@@ -22,9 +24,13 @@ func init() {
 		jwa.ES384:  crypto.SHA384,
 		jwa.ES512:  crypto.SHA512,
 		jwa.ES256K: crypto.SHA256,
+		jwa.SS256K: crypto.SHA256,
 	}
+
 	ecdsaSigners = make(map[jwa.SignatureAlgorithm]*ecdsaSigner)
 	ecdsaVerifiers = make(map[jwa.SignatureAlgorithm]*ecdsaVerifier)
+	schnorrVerifiers = make(map[jwa.SignatureAlgorithm]*schnorrVerifier)
+	schnorrSigners = make(map[jwa.SignatureAlgorithm]*schnorrSigner)
 
 	for alg, hash := range algs {
 		ecdsaSigners[alg] = &ecdsaSigner{
@@ -32,6 +38,14 @@ func init() {
 			hash: hash,
 		}
 		ecdsaVerifiers[alg] = &ecdsaVerifier{
+			alg:  alg,
+			hash: hash,
+		}
+		schnorrSigners[alg] = &schnorrSigner{
+			alg:  alg,
+			hash: hash,
+		}
+		schnorrVerifiers[alg] = &schnorrVerifier{
 			alg:  alg,
 			hash: hash,
 		}

@@ -1,5 +1,5 @@
-//go:build jwx_es256k
-// +build jwx_es256k
+//go:build jwx_secp256k1
+// +build jwx_secp256k1
 
 package jwk_test
 

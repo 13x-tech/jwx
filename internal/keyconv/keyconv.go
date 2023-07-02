@@ -6,6 +6,7 @@ import (
 	"crypto/rsa"
 	"fmt"
 
+	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"github.com/lestrrat-go/blackmagic"
 	"github.com/lestrrat-go/jwx/v2/jwk"
 	"golang.org/x/crypto/ed25519"
@@ -80,6 +81,48 @@ func ECDSAPrivateKey(dst, src interface{}) error {
 		ptr = src
 	default:
 		return fmt.Errorf(`expected ecdsa.PrivateKey or *ecdsa.PrivateKey, got %T`, src)
+	}
+	return blackmagic.AssignIfCompatible(dst, ptr)
+}
+
+func SchnorrPrivateKEy(dst, src interface{}) error {
+	if jwkKey, ok := src.(jwk.Key); ok {
+		var raw secp256k1.PrivateKey
+		if err := jwkKey.Raw(&raw); err != nil {
+			return fmt.Errorf(`failed to produce secp256k1.PrivateKey from %T: %w`, src, err)
+		}
+		src = &raw
+	}
+
+	var ptr *secp256k1.PrivateKey
+	switch src := src.(type) {
+	case secp256k1.PrivateKey:
+		ptr = &src
+	case *secp256k1.PrivateKey:
+		ptr = src
+	default:
+		return fmt.Errorf(`expected secp256k1.PrivateKey or *secp256k1.PrivateKey, got %T`, src)
+	}
+	return blackmagic.AssignIfCompatible(dst, ptr)
+}
+
+func SchnorrPublicKey(dst, src interface{}) error {
+	if jwkKey, ok := src.(jwk.Key); ok {
+		var raw secp256k1.PublicKey
+		if err := jwkKey.Raw(&raw); err != nil {
+			return fmt.Errorf(`failed to produce secp256k1.PublicKey from %T: %w`, src, err)
+		}
+		src = &raw
+	}
+
+	var ptr *secp256k1.PublicKey
+	switch src := src.(type) {
+	case secp256k1.PublicKey:
+		ptr = &src
+	case *secp256k1.PublicKey:
+		ptr = src
+	default:
+		return fmt.Errorf(`expected secp256k1.PublicKey or *secp256k1.PublicKey, got %T`, src)
 	}
 	return blackmagic.AssignIfCompatible(dst, ptr)
 }

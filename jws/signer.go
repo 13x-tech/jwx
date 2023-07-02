@@ -70,6 +70,14 @@ func init() {
 		}(alg))
 	}
 
+	for _, alg := range []jwa.SignatureAlgorithm{jwa.SS256K} {
+		RegisterSigner(alg, func(alg jwa.SignatureAlgorithm) SignerFactory {
+			return SignerFactoryFn(func() (Signer, error) {
+				return newSchnorrSigner(alg), nil
+			})
+		}(alg))
+	}
+
 	for _, alg := range []jwa.SignatureAlgorithm{jwa.HS256, jwa.HS384, jwa.HS512} {
 		RegisterSigner(alg, func(alg jwa.SignatureAlgorithm) SignerFactory {
 			return SignerFactoryFn(func() (Signer, error) {

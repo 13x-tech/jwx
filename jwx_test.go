@@ -241,7 +241,8 @@ func TestJoseCompatibility(t *testing.T) {
 		t.Parallel()
 		tests := []jwa.SignatureAlgorithm{
 			jwa.ES256,
-			//jwa.ES256K,
+			jwa.SS256K,
+			jwa.ES256K,
 			jwa.ES384,
 			jwa.ES512,
 			//jwa.EdDSA,
